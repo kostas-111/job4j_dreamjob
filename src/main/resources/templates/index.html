@@ -1,41 +1,38 @@
 <!DOCTYPE html>
 <header th:include="fragments/header :: header"></header>
+<nav th:fragment="navigation" class="navbar navbar-expand-lg navbar-dark bg-dark">
+<div class="container">
+    <a class="navbar-brand" href="/">Dream Job</a>
+</div>
+</nav>
 <body>
-<div th:replace="fragments/navigation :: navigation"></div>
 <div class="container">
     <div class="row">
         <table class="table">
             <thead>
             <tr>
-                <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
+                <th><h3>Проект job4j_dreamjob</h3></th>
             </tr>
             </thead>
             <tbody>
             <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
+                <td><h4><a href="/">Главная</a></h4></td>
             </tr>
             <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
+                <td><h4><a th:href="@{/vacancies}">Вакансии</a></h4></td>
             </tr>
             <tr>
-                <th scope="row">3</th>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
+                <td><h4><a th:href="@{/candidates}">Кандидаты</a></h4></td>
+            </tr>
+            <tr>
+                <td><h4><a th:href="@{/vacancies/create}">Создать вакансию</a></h4></td>
+            </tr>
+            <tr>
+                <td><h4><a th:href="@{/candidates/create}">Создать резюме</a></h4></td>
             </tr>
             </tbody>
         </table>
     </div>
+    <footer th:include="fragments/footer :: footer"></footer>
 </div>
-<footer th:include="fragments/footer :: footer"></footer>
 </body>
-</html>
