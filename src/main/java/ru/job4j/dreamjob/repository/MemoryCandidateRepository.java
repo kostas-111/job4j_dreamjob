@@ -9,21 +9,13 @@ import java.util.Optional;
 
 @Repository
 public class MemoryCandidateRepository implements CandidateRepository {
-
-    private static final MemoryCandidateRepository INSTANCE = new MemoryCandidateRepository();
-
     private int nextId = 1;
-
     private final Map<Integer, Candidate> candidates = new HashMap<>();
 
     private MemoryCandidateRepository() {
         save(new Candidate(1, "Donald Trump", "Опыт работы 10 лет. Навыки: Java 17, Jakarta EE10: EJB, JMS, JSF, CDI, JPA; Application servers: Oracle WebLogic, EAP, Wildfly, Tomcat"));
         save(new Candidate(2, "Dobrynia Nikitich", "Опыт работы 40 лет. Навыки: Assembler, Pascal, QBasic, Java 1"));
         save(new Candidate(3, "Bruce Lee", "Опыт работы 2 года. SQL, PL/pgSQL, PostgreSQL, Exel, Java, Maven, Git"));
-    }
-
-    public static MemoryCandidateRepository getInstance() {
-        return INSTANCE;
     }
 
     @Override
