@@ -1,16 +1,23 @@
 package ru.job4j.dreamjob.repository;
 
+import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Repository;
 import ru.job4j.dreamjob.model.Candidate;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Потокобезопасный репозиторий, использующий ConcurrentHashMap и AtomicInteger
+ * для безопасного хранения и управления кандидатами в памяти.
+ */
+@ThreadSafe
 @Repository
 public class MemoryCandidateRepository implements CandidateRepository {
-    private int nextId = 1;
-    private final Map<Integer, Candidate> candidates = new HashMap<>();
+    private final AtomicInteger nextId = new AtomicInteger(1);
+    private final Map<Integer, Candidate> candidates = new ConcurrentHashMap<>();
 
     private MemoryCandidateRepository() {
         save(new Candidate(1, "Donald Trump", "Опыт работы 10 лет. Навыки: Java 17, Jakarta EE10: EJB, JMS, JSF, CDI, JPA; Application servers: Oracle WebLogic, EAP, Wildfly, Tomcat"));
@@ -20,7 +27,7 @@ public class MemoryCandidateRepository implements CandidateRepository {
 
     @Override
     public Candidate save(Candidate candidate) {
-        candidate.setId(nextId++);
+        candidate.setId(nextId.getAndIncrement());
         candidates.put(candidate.getId(), candidate);
         return candidate;
     }

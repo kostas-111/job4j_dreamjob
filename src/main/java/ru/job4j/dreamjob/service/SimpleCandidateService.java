@@ -1,11 +1,18 @@
 package ru.job4j.dreamjob.service;
 
+import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Service;
 import ru.job4j.dreamjob.model.Candidate;
 import ru.job4j.dreamjob.repository.CandidateRepository;
 import java.util.Collection;
 import java.util.Optional;
 
+
+/**
+ * Потокобезопасный сервис для управления кандидатами.
+ * Не содержит изменяемого состояния, делегирует все операции в потокобезопасный репозиторий.
+ */
+@ThreadSafe
 @Service
 public class SimpleCandidateService implements CandidateService {
 

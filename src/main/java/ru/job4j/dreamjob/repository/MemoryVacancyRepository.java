@@ -1,16 +1,24 @@
 package ru.job4j.dreamjob.repository;
 
+import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Repository;
 import ru.job4j.dreamjob.model.Vacancy;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Потокобезопасный репозиторий, использующий ConcurrentHashMap и AtomicInteger
+ * для безопасного хранения и управления вакансиями в памяти.
+ */
+
+@ThreadSafe
 @Repository
 public class MemoryVacancyRepository implements VacancyRepository {
-    private int nextId = 1;
-    private final Map<Integer, Vacancy> vacancies = new HashMap<>();
+    private final AtomicInteger nextId = new AtomicInteger(1);
+    private final Map<Integer, Vacancy> vacancies = new ConcurrentHashMap<>();
 
     private MemoryVacancyRepository() {
         save(new Vacancy(1, "Intern Java Developer", "Начальная позиция для недавних выпускников или студентов с базовыми знаниями Java."));
@@ -23,7 +31,7 @@ public class MemoryVacancyRepository implements VacancyRepository {
 
     @Override
     public Vacancy save(Vacancy vacancy) {
-        vacancy.setId(nextId++);
+        vacancy.setId(nextId.getAndIncrement());
         vacancies.put(vacancy.getId(), vacancy);
         return vacancy;
     }
